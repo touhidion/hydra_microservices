@@ -1,5 +1,6 @@
 package com.prozuktilab.orderservice.service;
 
+import com.prozuktilab.orderservice.constant.Constants;
 import com.prozuktilab.orderservice.dto.InventoryResponse;
 import com.prozuktilab.orderservice.dto.OrderLineItemDto;
 import com.prozuktilab.orderservice.dto.OrderRequest;
@@ -21,7 +22,7 @@ import java.util.UUID;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final WebClient webClient;
+    private final WebClient.Builder webClientBuilder;
 
     @Override
     public void placeOrder(OrderRequest orderRequest) {
@@ -35,8 +36,8 @@ public class OrderServiceImpl implements OrderService {
                 .toList();
 
         //place order if inventory is in stock
-        InventoryResponse [] inventoryResponseArray = webClient.get()
-                .uri("http://localhost:8083/api/inventory"
+        InventoryResponse [] inventoryResponseArray = webClientBuilder.build().get()
+                .uri(Constants.INVENTORY_SERVICE_URL
                 ,uriBuilder -> uriBuilder.queryParam("skuCodes", skuCodes).build())
                 .retrieve()
                 .bodyToMono(InventoryResponse[].class)
