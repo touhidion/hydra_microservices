@@ -6,6 +6,11 @@ import com.prozuktilab.productservice.dto.ProductResponse;
 import java.util.List;
 
 public interface ProductService {
-    public void createProduct(ProductRequest productRequest);
-    public List<ProductResponse> getAllProducts();
+    void createProduct(ProductRequest productRequest);
+
+    List<ProductResponse> getAllProducts();
+
+    ProductResponse getProductById(String id);
+
+    ProductResponse deleteProductById(String id);
 }

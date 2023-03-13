@@ -21,8 +21,8 @@ dependencies {
     //discovery server's - client - no annotation required in class, auto register
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     //auth with keycloak
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+    //implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    //implementation 'org.springframework.boot:spring-boot-starter-security'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

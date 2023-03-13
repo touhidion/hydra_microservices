@@ -4,6 +4,7 @@ import com.prozuktilab.productservice.dto.ProductRequest;
 import com.prozuktilab.productservice.dto.ProductResponse;
 import com.prozuktilab.productservice.model.Product;
 import com.prozuktilab.productservice.repository.ProductRepository;
+import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,10 +31,28 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductResponse> getAllProducts() {
         List<Product> productList = productRepository.findAll();
-        return productList.stream().map(this::mapToProductResponse).toList();
+        return productList.stream().map(this::dtoToProductResponse).toList();
     }
 
-    private ProductResponse mapToProductResponse(Product product) {
+    @Override
+    public ProductResponse getProductById(String id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Product not found!"));
+        return dtoToProductResponse(product);
+    }
+
+    @Override
+    public ProductResponse deleteProductById(String id) {
+        ProductResponse productResponse = getProductById(id);
+        if (productResponse != null) {
+            productRepository.deleteById(id);
+        } else {
+            throw new IllegalArgumentException("Invalid id to delete.");
+        }
+        return productResponse;
+    }
+
+    private ProductResponse dtoToProductResponse(Product product) {
         return ProductResponse.builder()
                 .id(product.getId())
                 .name(product.getName())
